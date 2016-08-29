@@ -1,17 +1,23 @@
-var wds = [], tt = 0, b = document.getElementsByTagName('body')[0], ti
-var wl = 40, wc = 40
+function resetNote() {
+  wds = [], tt = 0, b = document.getElementsByTagName('body')[0]
+  wl = 40, wc = 40, evils = {k: false, i: false, n: false, o: false, x: false, a: false}
+}
+
+resetNote()
 ti = setInterval(function() {
   if (tt > 3) tt = 0
   tilt(document.getElementsByClassName('t')[tt], 0)
   tt++
 }, 100)
 setTimeout(startMessage, 3500)
+
 function startMessage() {
   randomWord()
   bgloop()
   clearInterval(ti)
   b.innerHTML = ''
 }
+
 function displayMessage() {
   for (var i in wds) {
     setTimeout(function() {
@@ -23,6 +29,7 @@ function displayMessage() {
     }, Math.random() * 1000 * i)
   }
 }
+
 function tilt(s, font) {
   var n = Math.floor(Math.random() * 5) || 1
   var dir = n % 2 > 0 ? '-' : '+'
@@ -31,12 +38,14 @@ function tilt(s, font) {
   if (font) style += ' font-size:' + n*1.5 + 'em'
   s.setAttribute('style', style)
 }
+
 function rgba(m) {
-  mm = m ? '.0' + Math.floor(Math.random() * 10) : 1
+  var mm = m ? '.0' + Math.floor(Math.random() * 10) : 1
   return 'rgba(' + Math.floor(Math.random() * 1000) + ',' +
     Math.floor(Math.random() * 1000) + ',' +
     Math.floor(Math.random() * 1000) + ',' + mm + ')'
 }
+
 function bgloop() {
   if (wds.length > 0) {
     setTimeout(function() { 
@@ -52,12 +61,21 @@ function bgloop() {
     s.setAttribute('onClick', 'startMessage()')
     b.setAttribute('style', 'background-color: white')
     b.appendChild(s)
-    wc = wl
+    resetNote()
   }
   b.scrollTop = 100000
 }
+
+// great artists steal
 // http://james.padolsey.com/javascript/random-word-generator/
 function createRandomWord(length) {
+  var n = Math.floor(Math.random() * 100)
+  if (n > 50 && n < 55 && !evils.k) {evils.k = true; return 'kill'} //evil
+  if (n > 55 && n < 60 && !evils.i) {evils.i = true; return 'in pieces'} //really evil
+  if (n > 60 && n < 65 && !evils.n) {evils.n = true; return 'never see them again'} //vaguely evil
+  if (n > 65 && n < 70 && !evils.o) {evils.o = true; return 'o_O'}
+  if (n > 70 && n < 75 && !evils.x) {evils.x = true; return 'x_x'}
+  if (n > 75 && n < 80 && !evils.a) {evils.a = true; return 'and bring it to'} //demands!
   var consonants = 'bcdfghjklmnpqrstvwxyz',
     vowels = 'aeiou',
     rand = function(limit) {
@@ -74,8 +92,9 @@ function createRandomWord(length) {
   }
   return word;
 }
+
 function randomWord() {
-  // make first and then some words jibberish
+  // make first and then some words a randomly generated word
   var n = Math.floor(Math.random() * 10) || 1
   if (wc == wl) {
     randomWordComplete({Word: 'Hello ' + createRandomWord(n) + ','})
