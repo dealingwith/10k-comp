@@ -68,14 +68,16 @@ function bgloop() {
 
 // great artists steal
 // http://james.padolsey.com/javascript/random-word-generator/
-function createRandomWord(length) {
-  var n = Math.floor(Math.random() * 100)
-  if (n > 50 && n < 55 && !evils.k) {evils.k = true; return 'kill'} //evil
-  if (n > 55 && n < 60 && !evils.i) {evils.i = true; return 'in pieces'} //really evil
-  if (n > 60 && n < 65 && !evils.n) {evils.n = true; return 'never see them again'} //vaguely evil
-  if (n > 65 && n < 70 && !evils.o) {evils.o = true; return 'o_O'}
-  if (n > 70 && n < 75 && !evils.x) {evils.x = true; return 'x_x'}
-  if (n > 75 && n < 80 && !evils.a) {evils.a = true; return 'and bring it to'} //demands!
+function createRandomWord(length, evil) {
+  if (evil) {
+    var n = Math.floor(Math.random() * 100)
+    if (n > 50 && n < 55 && !evils.k) {evils.k = true; return 'kill'} //evil
+    if (n > 55 && n < 60 && !evils.i) {evils.i = true; return 'in pieces'} //really evil
+    if (n > 60 && n < 65 && !evils.n) {evils.n = true; return 'never see them again'} //vaguely evil
+    if (n > 65 && n < 70 && !evils.o) {evils.o = true; return 'o_O'}
+    if (n > 70 && n < 75 && !evils.x) {evils.x = true; return 'x_x'}
+    if (n > 75 && n < 80 && !evils.a) {evils.a = true; return 'and bring it to'} //demands!
+  }
   var consonants = 'bcdfghjklmnpqrstvwxyz',
     vowels = 'aeiou',
     rand = function(limit) {
@@ -97,9 +99,9 @@ function randomWord() {
   // make first and then some words a randomly generated word
   var n = Math.floor(Math.random() * 10) || 1
   if (wc == wl) {
-    randomWordComplete({Word: 'Hello ' + createRandomWord(n) + ','})
+    randomWordComplete({Word: 'Hello ' + createRandomWord(10, false) + ','})
   } else if (n % 3 == 0) {
-    randomWordComplete({Word: createRandomWord(n)})
+    randomWordComplete({Word: createRandomWord(n, true)})
   } else {
     var requestStr = "http://www.setgetgo.com/randomword/get.php";
     $.ajax({
