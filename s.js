@@ -1,6 +1,6 @@
 function resetNote() {
   wds = [], tt = 0, b = document.getElementsByTagName('body')[0]
-  wl = 40, wc = 40, evils = {k: false, i: false, n: false, o: false, x: false, a: false}
+  wl = 40, wc = 40, evils = ['kill', 'inpieces', 'neverseethemagain', 'nofollowers', 'x_x', 'speakthistonoone', 'take', 'place', 'drive', 'road', 'get', 'andbringitto']
 }
 
 resetNote()
@@ -21,21 +21,29 @@ function startMessage() {
 function displayMessage() {
   for (var i in wds) {
     setTimeout(function() {
-      var s = document.createElement('div')
-      var st = document.createTextNode(wds.shift())
-      s.appendChild(st)
-      tilt(s, 1)
-      b.appendChild(s)
+      var letters = wds.shift().split('')
+      var worddiv = document.createElement('div')
+      for (var n in letters) {
+        var letterdiv = document.createElement('div')
+        var letter = document.createTextNode(letters[n])
+        tilt(letterdiv, 0, 1)
+        letterdiv.appendChild(letter)
+        worddiv.appendChild(letterdiv)
+      }
+      tilt(worddiv, 1, 0, 1)
+      b.appendChild(worddiv)
     }, Math.random() * 1000 * i)
   }
 }
 
-function tilt(s, font) {
+function tilt(s, fontsize, font, othershit) {
   var n = Math.floor(Math.random() * 5) || 1
   var dir = n % 2 > 0 ? '-' : '+'
-  var style ='transform: rotate(' + dir + n + 'deg); margin: 0 ' +
-    (Math.random() * 10) + 'px; ' //color: ' + rgba(0) + ';'
-  if (font) style += ' font-size:' + n*1.5 + 'em'
+  var style ='transform: rotate(' + dir + n + 'deg)'
+  if (fontsize) style += '; font-size:' + n*1.5 + 'em'
+  if (othershit) style += '; margin:0 ' + Math.floor(Math.random() * 30) + 'px'
+  if (font) style += '; font-family:"' + fonts[Math.floor(Math.random() * 100 / 2)] + '", serif'
+  if (!othershit && Math.random() * 100 < 10) style += '; color: white; background-color: #404040; padding: 0 4px'
   s.setAttribute('style', style)
 }
 
@@ -53,14 +61,13 @@ function bgloop() {
       bgloop()
     }, Math.random() * 500)
   } else {
-    var s = document.createElement('div')
-    var st = document.createTextNode('Replay')
-    s.appendChild(st)
-    s.setAttribute('style', 
+    var div = document.createElement('div')
+    div.appendChild(document.createTextNode('Replay'))
+    div.setAttribute('style', 
       'padding: .5em; border: 1px solid #e9e9e9; border-radius: 1em; margin: 2em; clear: left; cursor: pointer')
-    s.setAttribute('onClick', 'startMessage()')
+    div.setAttribute('onClick', 'startMessage()')
     b.setAttribute('style', 'background-color: white')
-    b.appendChild(s)
+    b.appendChild(div)
     resetNote()
   }
   b.scrollTop = 100000
@@ -69,20 +76,13 @@ function bgloop() {
 // great artists steal
 // http://james.padolsey.com/javascript/random-word-generator/
 function createRandomWord(length, evil) {
-  if (evil) {
-    var n = Math.floor(Math.random() * 100)
-    if (n > 50 && n < 55 && !evils.k) {evils.k = true; return 'kill'} //evil
-    if (n > 55 && n < 60 && !evils.i) {evils.i = true; return 'in pieces'} //really evil
-    if (n > 60 && n < 65 && !evils.n) {evils.n = true; return 'never see them again'} //vaguely evil
-    if (n > 65 && n < 70 && !evils.o) {evils.o = true; return 'o_O'}
-    if (n > 70 && n < 75 && !evils.x) {evils.x = true; return 'x_x'}
-    if (n > 75 && n < 80 && !evils.a) {evils.a = true; return 'and bring it to'} //demands!
+  var n = Math.floor(Math.random() * 100)
+  if (evil && Math.random() * 100 < 10) {
+    var word = evils.splice(rand(evils.length), 1)[0]
+    return word
   }
   var consonants = 'bcdfghjklmnpqrstvwxyz',
     vowels = 'aeiou',
-    rand = function(limit) {
-      return Math.floor(Math.random()*limit);
-    },
     i, word='', length = parseInt(length,10),
     consonants = consonants.split(''),
     vowels = vowels.split('');
@@ -94,13 +94,15 @@ function createRandomWord(length, evil) {
   }
   return word;
 }
-
+function rand(limit) {
+  return Math.floor(Math.random()*limit);
+}
 function randomWord() {
   // make first and then some words a randomly generated word
   var n = Math.floor(Math.random() * 10) || 1
   if (wc == wl) {
-    randomWordComplete({Word: 'Hello ' + createRandomWord(10, false) + ','})
-  } else if (n % 3 == 0) {
+    randomWordComplete({Word: 'Hello'})
+  } else if (n % 2 == 0) {
     randomWordComplete({Word: createRandomWord(n, true)})
   } else {
     var requestStr = "http://www.setgetgo.com/randomword/get.php";
@@ -118,3 +120,5 @@ function randomWordComplete(data) {
   wc--
   if (wc == 0) { displayMessage() } else { randomWord() }
 }
+
+var fonts = ['Trattatello', 'American Typewriter', 'Andale Mono', 'Apple Casual', 'Apple Chancery', 'Apple Garamond', 'Apple Gothic', 'Arial sans', 'Ayuthaya', 'Baskerville', 'Big Caslon', 'Brush Script', 'Chalkboard', 'Chalkduster', 'Charcoal', 'Chicago', 'Cochin', 'Comic Sans', 'Cooper', 'Copperplate', 'Courier', 'Didot', 'Futura', 'Gadget', 'Geneva', 'Georgia', 'Gill Sans', 'Helvetica', 'Herculanum', 'Hoefler Text', 'Impact', 'Keyboard', 'Lucida Grande', 'Marker Felt', 'Menlo', 'Monaco', 'New Peninim', 'New York', 'Optima', 'Palatino', 'Papyrus', 'Plantagenet Cherokee', 'Sand', 'Skia', 'Tahoma', 'Techno', 'Textile', 'Times', 'Trebuchet MS', 'Verdana']
