@@ -1,4 +1,18 @@
-<style>div { float: left } @keyframes blink-animation { to { visibility: hidden } } @-webkit-keyframes blink-animation { to { visibility: hidden } }</style>
+<style>
+  div { float: left } 
+  @keyframes blink-animation { 
+    to { visibility: hidden } 
+  } 
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+      transition: opacity 2s ease-in-out;
+    }
+  }
+</style>
 <body style="background-color:white">
   <div style="height:100%;width:100%;margin: 30% 0 0 10%;font-size:4em">
     <div class="t">Ransom</div> <div class="t">note</div> <div class="t">from</div> <div class="t">space</div>

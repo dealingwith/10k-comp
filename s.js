@@ -42,7 +42,7 @@ function tilt(s, fontsize, font, othershit) {
   var style ='transform: rotate(' + dir + n + 'deg)'
   if (fontsize) style += '; font-size:' + n*1.5 + 'em'
   if (othershit) style += '; margin:0 ' + Math.floor(Math.random() * 30) + 'px'
-  if (font) style += '; font-family:"' + fonts[Math.floor(Math.random() * 100 / 2)] + '", serif'
+  if (font) style += '; font-family:"' + fonts[Math.floor(Math.random() * 100 / 2)] + '", serif; animation: fade-in 1s 1'
   if (!othershit && Math.random() * 100 < 10) style += '; color: white; background-color: #404040; padding: 0 4px'
   s.setAttribute('style', style)
 }
